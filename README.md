@@ -127,6 +127,42 @@ extra keys — but the practical answer is to use a `?xr=1` query and call
 `requestSession` directly, which is roughly an order of magnitude less
 fragile.
 
+## Persistent playspace origin (location-based applications)
+
+If you are building a location-based experience — the virtual scene must line
+up with the same real-world position every time the headset is put on, across
+reboots, by any user — `local-floor` is not enough. Each fresh WebXR session
+re-derives a new origin from wherever the headset is when the session starts,
+so the world drifts every time someone walks to a different spot before
+entering VR.
+
+For a stable, surveyed origin you need both of the following on the headset:
+
+1. **Pico LBE (Location-Based Entertainment) map.** In Pico for Business →
+   LBE / Map Management, capture a map of the room and assign it to the
+   headset. The headset will relocalise against that map on every boot, so
+   "the origin" is anchored to your physical space rather than to head pose
+   at session start.
+2. **Request `bounded-floor` as the reference space** in your WebXR code,
+   not `local-floor`:
+
+   ```js
+   const session = await navigator.xr.requestSession('immersive-vr', {
+     requiredFeatures: ['bounded-floor'],
+   });
+   const refSpace = await session.requestReferenceSpace('bounded-floor');
+   ```
+
+   `bounded-floor` is the only standard WebXR reference space tied to the
+   surveyed playspace; `local` and `local-floor` are tied to the head pose
+   at session entry and will not persist across sessions.
+
+If either piece is missing the experience will still run, but the origin
+will move between sessions. The kiosk launcher in this repo is independent
+of both: it only opens the URL — your page is responsible for asking for
+`bounded-floor`, and Device Manager is responsible for assigning the LBE
+map.
+
 ## How it stays in WebXR
 
 - The activity is declared `android:launchMode="singleInstance"` so kiosk
