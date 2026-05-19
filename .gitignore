@@ -1,0 +1,19 @@
+build/
+*.apk
+*.dex
+*.class
+*.dm
+
+# Signing key — DO NOT commit. Regenerate locally with ./build.sh.
+debug.keystore
+*.keystore
+*.jks
+release-key.properties
+
+# macOS
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+*.iml

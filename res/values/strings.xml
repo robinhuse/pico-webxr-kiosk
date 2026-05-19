@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Edit these two strings before building. They are read at runtime by
+        MainActivity and used to construct the Custom Tabs intent sent to the
+        Pico browser.
+
+        target_url    The WebXR experience the kiosk should open. The string
+                      "?xr=1" or "?enterxr=1" is appended automatically when
+                      neither query parameter is already present, which is how
+                      the page detects a "kiosk launch" and auto-enters the
+                      immersive session. Replace with your own URL.
+
+        target_label  Shown as the app label in Device Manager and on the home
+                      screen tile (only visible in non-kiosk setups).
+    -->
+    <string name="target_url" translatable="false">https://sonnensystem-webxr.vercel.app</string>
+    <string name="target_label" translatable="false">Pico WebXR Kiosk</string>
+</resources>
